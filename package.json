@@ -1,0 +1,15 @@
+{
+  "name": "gingerjs",
+  "version": "0.0.2",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/javascriptByte/ginger.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
