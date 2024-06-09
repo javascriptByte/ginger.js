@@ -1,0 +1,10 @@
+# Node.js related files and directories
+node_modules/
+
+# Optional npm cache directory
+.npm/
+
+# ginger js specific
+.gingerstore/
+scratch/
+dist/
