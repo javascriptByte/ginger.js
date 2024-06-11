@@ -13,8 +13,14 @@
     "test:core": "jest tests/core.test.ts",
     "start": "node dist/index.js",
     "build": "tsc",
+    "build:github": "tsc --outDir dist-github",
     "watch": "tsc --watch & nodemon dist/index.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "devDependencies": {
     "@actions/github": "^6.0.0",
     "@jest/globals": "^29.7.0",

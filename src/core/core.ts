@@ -1,9 +1,7 @@
 import { debounce, processNestedStructure,_get,_set,_remove } from './utils';
-import { GingerArguments, GingerInstance, Store, _Setter, _Getter } from '../types/types';
+import { GingerArguments, GingerInstance, Store, _Setter, _Getter,Subscriptions } from '../types/types';
 
-interface Subscriptions {
-    [key: string] : Array<(arg:any)=>any>;
-}
+
 const ginger = function ({
     prefix = 'default',
     storageAdapter

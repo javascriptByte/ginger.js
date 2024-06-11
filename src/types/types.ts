@@ -29,3 +29,6 @@ export interface NodeProps{
 export type ContentType= string;
 
 export type PrefixedStorage = (instance:any,prefix:string) => GingerInstance;
+export interface Subscriptions {
+    [key: string] : Array<(arg:any)=>any>;
+}
