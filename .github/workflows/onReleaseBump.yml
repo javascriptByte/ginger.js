@@ -89,12 +89,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
+      - name: Compress build artifacts
+        run: |
+          zip -r dist-github.zip dist-github
+
       - name: Upload release assets
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: dist-github/**/*
+          asset_path: ./dist-github.zip
           asset_name: dist-github.zip
           asset_content_type: application/zip
