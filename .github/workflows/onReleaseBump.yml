@@ -1,0 +1,113 @@
+name: Update Version on Release
+on:
+  release:
+    types: [created]
+
+# on:
+#   push:
+#     branches:
+#       - main
+# name: Update Version on Release
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+
+      - name: Debug information
+        run: |
+          echo "Target commitish: ${{ github.event.release.target_commitish }}"
+          echo "Release tag: ${{ github.event.release.tag_name }}"
+          echo "Current branch: $(git branch --show-current)"
+          echo "Available branches:"
+          git branch -a
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Remove 'v' from tag
+        id: remove_v
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+        
+      - name: Source the env file
+        run: source $GITHUB_ENV
+
+      - name: Update version in package.json
+        run: |
+          NEW_VERSION=$TAG_NAME
+          node -e "
+          let pkg = require('./package.json');
+          pkg.version = '$NEW_VERSION';
+          require('fs').writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+          "
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit changes
+        run: |
+          git checkout ${{ github.event.release.target_commitish }} || git checkout -b ${{ github.event.release.target_commitish }}
+          git add package.json
+          git commit -m "Bump version to $TAG_NAME"
+          git push origin HEAD:${{ github.event.release.target_commitish }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      # - name: Create release branch
+      #   run: |
+      #     git checkout -b release-${TAG_NAME}
+      #     git push origin release-${TAG_NAME}
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+      
+      # - name: Commit changes
+      #   run: |
+      #     git add dist
+      #     git commit -m "Add build artifacts"
+      #     git push origin HEAD:release-${TAG_NAME}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Compress build artifacts
+        run: |
+          zip -r dist.zip dist
+      
+      # - name: List files for debugging
+      #   run: ls -l
+
+      # - name: Upload versioned artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: dist-${TAG_NAME}
+      #     path: ./dist-${TAG_NAME}.zip
+          
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist.zip
+          asset_name: dist.zip
+          asset_content_type: application/zip
