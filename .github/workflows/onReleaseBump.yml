@@ -79,11 +79,11 @@ jobs:
         run: npm install
 
       - name: Build project
-        run: npm run build:github
+        run: npm run build
       
       - name: Commit changes
         run: |
-          git add dist-github
+          git add dist
           git commit -m "Add build artifacts"
           git push origin HEAD:release-${TAG_NAME}
         env:
@@ -91,7 +91,7 @@ jobs:
       
       - name: Compress build artifacts
         run: |
-          zip -r dist-github.zip dist-github
+          zip -r dist.zip dist
 
       - name: Upload release assets
         uses: actions/upload-release-asset@v1
@@ -99,6 +99,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist-github.zip
-          asset_name: dist-github.zip
+          asset_path: ./dist.zip
+          asset_name: dist.zip
           asset_content_type: application/zip

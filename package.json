@@ -2,7 +2,7 @@
   "name": "gingerjs",
   "version": "0.0.6",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "repository": {
     "type": "git",
@@ -13,7 +13,6 @@
     "test:core": "jest tests/core.test.ts",
     "start": "node dist/index.js",
     "build": "tsc",
-    "build:github": "tsc --outDir dist-github",
     "watch": "tsc --watch & nodemon dist/index.js"
   },
   "files": [
