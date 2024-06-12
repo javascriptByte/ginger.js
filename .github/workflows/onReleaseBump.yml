@@ -70,10 +70,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Create release branch
-        run: |
-          git checkout -b release-${TAG_NAME}
-          git push origin release-${TAG_NAME}
+      # - name: Create release branch
+      #   run: |
+      #     git checkout -b release-${TAG_NAME}
+      #     git push origin release-${TAG_NAME}
       
       - name: Install dependencies
         run: npm install
@@ -81,13 +81,13 @@ jobs:
       - name: Build project
         run: npm run build
       
-      - name: Commit changes
-        run: |
-          git add dist
-          git commit -m "Add build artifacts"
-          git push origin HEAD:release-${TAG_NAME}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Commit changes
+      #   run: |
+      #     git add dist
+      #     git commit -m "Add build artifacts"
+      #     git push origin HEAD:release-${TAG_NAME}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Compress build artifacts
         run: |
