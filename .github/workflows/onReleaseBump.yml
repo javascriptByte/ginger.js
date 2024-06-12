@@ -91,14 +91,20 @@ jobs:
       
       - name: Compress build artifacts
         run: |
-          zip -r dist.zip dist
+          zip -r dist-${TAG_NAME}.zip dist
 
+      - name: Upload versioned artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-${TAG_NAME}
+          path: ./dist-${TAG_NAME}.zip
+          
       - name: Upload release assets
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./dist.zip
-          asset_name: dist.zip
+          asset_path: ./dist-${TAG_NAME}.zip
+          asset_name: dist-${TAG_NAME}.zip
           asset_content_type: application/zip
