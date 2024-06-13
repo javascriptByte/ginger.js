@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "module": "ESNext", // or "ES6" if targeting a specific version
+    "target": "ES6",
+    "module": "commonjs", // CommonJS is widely compatible. You can also use "ES6" for ES module support.
     "outDir": "./dist",
-    "target": "ESNext", // or "ES6" if targeting a specific version
     "esModuleInterop": true,
     "moduleResolution": "node",
     "declaration": true,
-    // "declarationDir": "./dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "composite": true,
+    "declarationMap": true,
+    "types": ["node"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"],
