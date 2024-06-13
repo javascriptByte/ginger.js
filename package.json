@@ -1,10 +1,10 @@
 {
   "name": "gingerjs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "dist/cjs/src/index.js",
   "module": "dist/esm/src/index.js",
-  "types": "dist/types/index.d.ts", 
+  "types": "dist/types/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
